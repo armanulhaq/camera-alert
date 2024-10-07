@@ -1,7 +1,9 @@
 import cv2
+import os
 import time
 import glob
 from send_email import send_email
+from threading import Thread
 
 video = cv2.VideoCapture(0) #Initializes the webcam (device 0 refers to the default webcam).
 time.sleep(1) #Give the camera some time to settle
@@ -9,6 +11,13 @@ time.sleep(1) #Give the camera some time to settle
 first_frame = None
 status_list = []
 count = 0
+
+def clean_image_folder():
+    print("Clean start")
+    images = glob.glob("images/*.png")
+    for image in images:
+        os.remove(image)
+    print("Clean finish")
 
 while True:
     status = 0
@@ -45,16 +54,21 @@ while True:
     status_list = status_list[-2:]
 
     if status_list[0] == 1 and status_list[1] == 0:
-        if status_list.count(1) > 3:  #
-            send_email(image_path="images/19.png")
+        email_thread = Thread(target=send_email, args=(image_with_object, ))
+        email_thread.daemon = True
+        #send_email(image_with_object) #The frames hang when the object leaves the frame. So we introduced Threading
+        clean_thread = Thread(target=clean_image_folder)
+        clean_thread.daemon = True
 
-    print(status_list)
+        email_thread.start()
 
     cv2.imshow("Video", frame)
 
     key = cv2.waitKey(1) #Waits for 1 millisecond (loop is also for 1 millisecond each) and saves the key pressed in key variable
 
-    if key == ord("q"): #converts q to its ASCII value
+    if key == ord("q"): # Converts 'q' to its ASCII value
         break
 
 video.release()
+clean_thread.start()
+clean_thread.join()  # Wait for the cleaning thread to finish before exiting

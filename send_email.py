@@ -8,6 +8,7 @@ SENDER = "armanulhaq10@gmail.com"
 RECEIVER = "armanulhaq10@gmail.com"
 
 def send_email(image_path):
+    print("Send Start")
     email_message = EmailMessage()
     email_message["Subject"] = "New customer showed up!"
     email_message.set_content('Hey, we just saw a new customer')
@@ -22,6 +23,4 @@ def send_email(image_path):
     gmail.login(SENDER, PASSWORD)
     gmail.sendmail(SENDER, RECEIVER, email_message.as_string())
     gmail.quit()
-
-if __name__ == "__main__":
-    send_email(image_path="images/19.png")
+    print("Send Finish")
