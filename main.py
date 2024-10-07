@@ -1,5 +1,6 @@
 import cv2
 import time
+import glob
 from send_email import send_email
 
 video = cv2.VideoCapture(0) #Initializes the webcam (device 0 refers to the default webcam).
@@ -7,6 +8,7 @@ time.sleep(1) #Give the camera some time to settle
 
 first_frame = None
 status_list = []
+count = 0
 
 while True:
     status = 0
@@ -20,24 +22,31 @@ while True:
 
     delta_frame = cv2.absdiff(first_frame, gray_frame_gau)
 
-    threshold_frame = cv2.threshold(delta_frame, 30, 255, cv2.THRESH_BINARY)[1] #Any value above 30 will be 255 and ideally rest of the frame should be black. So we test different values and ended up on 60
+    threshold_frame = cv2.threshold(delta_frame, 60, 255, cv2.THRESH_BINARY)[1] #Any value above 30 will be 255 and ideally rest of the frame should be black. So we test different values and ended up on 60
     dil_frame = cv2.dilate(threshold_frame, None, iterations=2) #it helps in making the white areas (which represent motion) more visible and connected, eliminating small noise or gaps.
     cv2.imshow("My video", threshold_frame) #Displays the frames in a window titled "My video"
 
     contours, check = cv2.findContours(dil_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) #Find all the contours in the frame, i.e., the outline of the new objects in the frame
 
     for contour in contours:
-        if cv2.contourArea(contour) < 5000: #If the new object is of the size less than 10k pixel, it's mostly a fake object detected due to change in lighting condition
+        if cv2.contourArea(contour) < 15000: #If the new object is of the size less than 10k pixel, it's mostly a fake object detected due to change in lighting condition
             continue
         x, y, w, h = cv2.boundingRect(contour) #extract the edges and the width
         rectangle = cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 3) # make a (0,255,0) (green) coloured rectangle of width 3
         if rectangle.any():
             status = 1
+            cv2.imwrite(f"images/{count}.png", frame)
+            count = count + 1
+            all_images = glob.glob("images/*.png")
+            image_with_object = all_images[int(len(all_images)/2)]
+
+
     status_list.append(status)
     status_list = status_list[-2:]
 
     if status_list[0] == 1 and status_list[1] == 0:
-            send_email()
+        if status_list.count(1) > 3:  #
+            send_email(image_path="images/19.png")
 
     print(status_list)
 
