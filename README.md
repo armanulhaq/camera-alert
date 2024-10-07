@@ -18,5 +18,5 @@ This project is a motion detection application that uses a webcam to monitor for
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your_username/motion_detection_email_notifier.git
-   cd motion_detection_email_notifier
+   git clone https://github.com/armanulhaq/camera-alert
+   cd camera-alert
