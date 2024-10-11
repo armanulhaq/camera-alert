@@ -19,7 +19,7 @@ This application detects motion using a webcam and sends an email notification w
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/armanulhaq/motion-detection-email.git
+   git clone https://github.com/armanulhaq/camera-alert.git
    cd motion-detection-email
 2.  Install the required packages:
    ```bash
