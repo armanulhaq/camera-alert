@@ -1,22 +1,36 @@
-# Motion Detection Email Notifier
+# Motion Detection and Email Notification App
 
 ## Description
-This project is a motion detection application that uses a webcam to monitor for movement. When motion is detected, the application captures an image and sends it via email to a specified recipient. The application is built using OpenCV for image processing and the smtplib library for email functionality. Captured images are stored temporarily in an "images" folder, which is cleaned up after sending the email.
+This application detects motion using a webcam and sends an email notification with a captured image when motion is detected. It leverages OpenCV for video capture and image processing, and uses the `smtplib` library to send emails.
 
 ## Features
-- Real-time motion detection using a webcam
-- Captures and saves images when motion is detected
-- Sends captured images via email
-- Automatically cleans up stored images after sending
+- Real-time motion detection using webcam
+- Captures images of detected motion
+- Sends email notifications with the captured images
+- Automatically cleans up old images to save storage space
 
-## Requirements
-- Python 3.x
+## Technologies Used
+- Python
 - OpenCV
-- imghdr
 - smtplib
+- EmailMessage
 
 ## Installation
+
 1. Clone the repository:
    ```bash
-   git clone https://github.com/armanulhaq/camera-alert
-   cd camera-alert
+   git clone https://github.com/yourusername/motion-detection-email.git
+   cd motion-detection-email
+2.  Install the required packages:
+   ```bash
+   pip install opencv-python
+   ```
+3. Set up your email credentials in the script:
+   ```bash
+   PASSWORD = "your_email_password"
+   SENDER = "your_email@gmail.com"
+   RECEIVER = "recipient_email@gmail.com"
+   ```
+4. Run the application:
+   ```bash
+   python main.py
