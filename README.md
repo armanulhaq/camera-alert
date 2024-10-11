@@ -18,19 +18,19 @@ This application detects motion using a webcam and sends an email notification w
 ## Installation
 
 1. Clone the repository:
-   ```bash
+```bash
    git clone https://github.com/armanulhaq/camera-alert.git
    cd camera-alert
 2.  Install the required packages:
-   ```bash
+```bash
    pip install opencv-python
-   ```
+```
 3. Set up your email credentials in the script:
-   ```bash
+```bash
    PASSWORD = "your_email_password"
    SENDER = "your_email@gmail.com"
    RECEIVER = "recipient_email@gmail.com"
-   ```
+```
 4. Run the application:
-   ```bash
+```bash
    python main.py
